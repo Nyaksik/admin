@@ -62,8 +62,7 @@ examples/typescript-server.js
 test/types/index.js
 
 #prisma
-prisma/db/**
-prisma/migrations/**
+db
 
 #env
 .env
