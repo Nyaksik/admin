@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import Password from './services/password'
-import { RefreshToken, User } from './services'
+import { Password, Records, RefreshToken, User } from './services'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -8,6 +7,7 @@ declare module 'fastify' {
     user: User
     refreshToken: RefreshToken
     password: Password
+    records: Records
     someSupport(): string
   }
 }

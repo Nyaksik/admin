@@ -29,6 +29,6 @@ model Record {
   date      DateTime? @default(now())
   cash      Int?
   completed Boolean   @default(false)
-  userId    Int       @unique
+  userId    Int
   user      User      @relation(fields: [userId], references: [id])
 }
