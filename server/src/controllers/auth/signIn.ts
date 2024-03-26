@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { ACCESS_TOKEN } from '../../utils'
+import { ACCESS_TOKEN } from '@/utils'
 
 export const signIn = (fastify: FastifyInstance) => {
   return async (

@@ -5,9 +5,9 @@ import {
   getRecords,
   getRecordsById,
   updateRecords,
-} from '../../controllers'
-import { jwtVerify, userVerify } from '../../utils'
-import { RecordsBodySchema, RecordsQuerySchema } from '../../schemas'
+} from '@/controllers'
+import { RecordsBodySchema, RecordsQuerySchema } from '@/schemas'
+import { jwtVerify, userVerify } from '@/utils'
 
 const records: FastifyPluginAsync = async (fastify): Promise<void> => {
   fastify.addHook('preHandler', jwtVerify)

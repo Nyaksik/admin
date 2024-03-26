@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify'
-import { UserBodySchema } from '../../schemas'
-import { refresh, signIn, signUp } from '../../controllers'
+import { UserBodySchema } from '@/schemas'
+import { refresh, signIn, signUp } from '@/controllers'
 
 const auth: FastifyPluginAsync = async (fastify): Promise<void> => {
   fastify.post(

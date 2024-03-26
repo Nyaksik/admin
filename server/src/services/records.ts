@@ -1,6 +1,6 @@
 import { PrismaClient, Record as schema } from '@prisma/client'
 import { FastifyInstance } from 'fastify'
-import { IRecords, IRecordsQuery } from '../types'
+import { IRecords, IRecordsQuery } from '@/types'
 
 export class Records {
   private _prisma: PrismaClient

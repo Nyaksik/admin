@@ -2,7 +2,14 @@
   "extends": "fastify-tsconfig",
   "compilerOptions": {
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "@/utils": ["src/utils/"],
+      "@/schemas": ["src/schemas/"],
+      "@/services": ["src/services/"],
+      "@/types": ["src/types/"],
+      "@/controllers": ["src/controllers/"],
+    }
   },
   "include": ["src/**/*.ts"],
 }

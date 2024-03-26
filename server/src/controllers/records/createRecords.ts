@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { IRecords } from '../../types'
+import { IRecords } from '@/types'
 
 export const createRecords = (fastify: FastifyInstance) => {
   return async (request: FastifyRequest, reply: FastifyReply) => {
