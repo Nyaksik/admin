@@ -47,7 +47,7 @@ export const signIn = (fastify: FastifyInstance) => {
           httpOnly: true,
         })
         .status(200)
-        .send({ data: { refreshToken: token } })
+        .send({ refreshToken: token })
     } catch (e) {
       console.log(e)
 

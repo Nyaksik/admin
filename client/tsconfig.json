@@ -8,8 +8,12 @@
     "paths": {
       "@/router": ["./src/router/"],
       "@/views": ["./src/views/"],
-      "@/components/*": ["./src/components/*"],
+      "@/components": ["./src/components/"],
       "@/hoc": ["./src/hoc/"],
+      "@/api": ["./src/api/"],
+      "@/services": ["./src/services/"],
+      "@/hooks": ["./src/hooks/"],
+      "@/constant": ["./src/constant"],
     },
 
     /* Bundler mode */

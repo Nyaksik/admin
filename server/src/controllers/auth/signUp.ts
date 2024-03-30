@@ -36,7 +36,7 @@ export const signUp = (fastify: FastifyInstance) => {
           httpOnly: true,
         })
         .status(201)
-        .send({ data: { refreshToken: token } })
+        .send({ refreshToken: token })
     } catch (e) {
       if (e instanceof Error) {
         reply.status(400).send({ messages: e.message })

@@ -13,9 +13,7 @@ export const getRecords = (fastify: FastifyInstance) => {
         pagination: {
           total: count,
         },
-        data: {
-          records,
-        },
+        records,
       })
     } catch (error) {
       if (error instanceof Error) {
