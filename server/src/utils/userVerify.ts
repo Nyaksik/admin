@@ -18,7 +18,7 @@ export const userVerify = (fastify: FastifyInstance) => {
       }
     } catch (err) {
       if (err instanceof Error) {
-        reply.status(401).send({ error: [err.message] })
+        reply.status(401).send({ messages: [err.message] })
       }
     }
   }

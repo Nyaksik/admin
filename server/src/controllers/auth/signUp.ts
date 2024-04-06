@@ -1,5 +1,9 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { ACCESS_TOKEN } from '@/utils'
+import {
+  ACCESS_TOKEN,
+  ACCESS_TOKEN_EXPIRE_IN,
+  REFRESH_TOKEN_EXPIRE_IN,
+} from '@/utils'
 
 export const signUp = (fastify: FastifyInstance) => {
   return async (
@@ -22,8 +26,14 @@ export const signUp = (fastify: FastifyInstance) => {
 
       const { id } = await fastify.user.createUser(login, hash)
 
-      const accessToken = fastify.jwt.sign({ id }, { expiresIn: '1h' }),
-        refreshToken = fastify.jwt.sign({ id }, { expiresIn: '7d' })
+      const accessToken = fastify.jwt.sign(
+          { id },
+          { expiresIn: ACCESS_TOKEN_EXPIRE_IN },
+        ),
+        refreshToken = fastify.jwt.sign(
+          { id },
+          { expiresIn: REFRESH_TOKEN_EXPIRE_IN },
+        )
 
       const { token } = await fastify.refreshToken.createRefreshToken(
         id,
@@ -36,7 +46,7 @@ export const signUp = (fastify: FastifyInstance) => {
           httpOnly: true,
         })
         .status(201)
-        .send({ refreshToken: token })
+        .send({ refreshToken: token, userId: id })
     } catch (e) {
       if (e instanceof Error) {
         reply.status(400).send({ messages: e.message })

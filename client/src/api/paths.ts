@@ -3,5 +3,7 @@ export const paths = {
     signIn: '/sign-in',
     signUp: '/sign-up',
     refresh: '/refresh',
+    login: '/login',
+    logout: '/logout',
   },
 }

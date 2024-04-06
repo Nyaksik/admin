@@ -18,7 +18,7 @@ export const createRecords = (fastify: FastifyInstance) => {
       if (error instanceof Error) {
         reply.send({
           status: 400,
-          message: [error.message],
+          messages: [error.message],
         })
       }
     }

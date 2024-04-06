@@ -1,7 +1,8 @@
-import { pageWrapper } from '@/hoc'
 import { Button, Input, Form } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { FormAuthWrapper } from '@/components'
+import { pageWrapper } from '@/hoc'
+import { PATHS } from '@/constant'
 
 const { Item } = Form
 const { Password } = Input
@@ -11,7 +12,7 @@ function SignIn() {
     <FormAuthWrapper
       buttonActionText={'Войти'}
       buttonLink={
-        <Button type={'link'} href={'/sign-up'}>
+        <Button type={'link'} href={PATHS.signUp}>
           Пройти регистрацию
         </Button>
       }

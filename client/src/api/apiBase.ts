@@ -14,11 +14,11 @@ export class ApiBase {
     return await this.$axios.get(this.path, { params: query })
   }
 
-  async post<T, D>(data: T, query?: string): Promise<{ data: D }> {
+  async post<T, D>(data?: T, query?: string): Promise<{ data: D }> {
     return await this.$axios.post(this.path, data, { params: { query } })
   }
 
-  async patch<T, D>(data: T, query?: string): Promise<{ data: D }> {
+  async patch<T, D>(data?: T, query?: string): Promise<{ data: D }> {
     return await this.$axios.post(this.path, data, { params: { query } })
   }
 

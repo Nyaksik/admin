@@ -1,1 +1,1 @@
-export { LocalStorage } from './localStorage.ts'
+export { LocalStorageService } from './localStorageService.ts'

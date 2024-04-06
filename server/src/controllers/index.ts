@@ -1,7 +1,4 @@
-export { signIn } from './auth'
-export { signUp } from './auth'
-export { refresh } from './auth'
-export { logoutController } from './logout'
+export { signIn, signUp, refresh, logout, login } from './auth'
 export {
   getRecords,
   createRecords,

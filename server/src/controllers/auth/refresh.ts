@@ -1,5 +1,9 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { ACCESS_TOKEN } from '@/utils'
+import {
+  ACCESS_TOKEN,
+  ACCESS_TOKEN_EXPIRE_IN,
+  REFRESH_TOKEN_EXPIRE_IN,
+} from '@/utils'
 
 export const refresh = (fastify: FastifyInstance) => {
   return async (
@@ -9,10 +13,15 @@ export const refresh = (fastify: FastifyInstance) => {
     try {
       const { refreshToken: bodyRefreshToken } = request.body,
         dateNow = new Date().getTime(),
-        { id, exp }: { id: number; exp: number } =
-          fastify.jwt.verify(bodyRefreshToken),
-        expDate = new Date(exp * 1000).getTime(),
-        user = await fastify.user.getUserById(id)
+        jwt: { id: number; exp: number } | null =
+          fastify.jwt.decode(bodyRefreshToken)
+
+      if (!jwt) {
+        throw new Error('Неверный токен!')
+      }
+
+      const expDate = new Date(jwt.exp * 1000).getTime(),
+        user = await fastify.user.getUserById(jwt.id)
 
       if (!user) {
         throw new Error('Пользователь с таким id не найден!')
@@ -34,9 +43,12 @@ export const refresh = (fastify: FastifyInstance) => {
 
       const accessToken = fastify.jwt.sign(
           { id: user.id },
-          { expiresIn: '1h' },
+          { expiresIn: ACCESS_TOKEN_EXPIRE_IN },
         ),
-        refreshToken = fastify.jwt.sign({ id: user.id }, { expiresIn: '7d' })
+        refreshToken = fastify.jwt.sign(
+          { id: user.id },
+          { expiresIn: REFRESH_TOKEN_EXPIRE_IN },
+        )
 
       const { token } = await fastify.refreshToken.createRefreshToken(
         user.id,
@@ -48,13 +60,16 @@ export const refresh = (fastify: FastifyInstance) => {
           secure: true,
           httpOnly: true,
         })
-        .status(201)
-        .send({ data: { refreshToken: token } })
+        .status(200)
+        .send({ refreshToken: token })
     } catch (error) {
       if (error instanceof Error) {
-        reply.status(400).send({
-          error: [error.message],
-        })
+        reply
+          .clearCookie(ACCESS_TOKEN)
+          .status(401)
+          .send({
+            messages: [error.message],
+          })
       }
     }
   }

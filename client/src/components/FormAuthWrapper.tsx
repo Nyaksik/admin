@@ -1,20 +1,14 @@
 import { Button, Card, Flex, Form } from 'antd'
 import { ReactNode } from 'react'
-import { useFetch } from '@/hooks'
+import { useFetch, useUser } from '@/hooks'
 import { API } from '@/api'
-import { LocalStorage } from '@/services'
-import { REFRESH_TOKEN } from '@/constant'
-import { useNavigate } from 'react-router-dom'
+import { UserSignIn } from '@/types'
 
 const { Item, useForm } = Form
 
 interface Payload {
   login: string
   password: string
-}
-
-interface ResponseData {
-  refreshToken: string
 }
 
 interface Props {
@@ -30,20 +24,16 @@ export function FormAuthWrapper({
   buttonLink,
   apiMethod = 'signIn',
 }: Props) {
-  const navigate = useNavigate()
+  const { login } = useUser()
   const [form] = useForm()
   const { fetchData, loading } = useFetch()
 
   const onSubmit = async () => {
     const values = await form.validateFields()
 
-    const { data } = await API.auth[apiMethod].post<Payload, ResponseData>(
-      values,
-    )
+    const { data } = await API.auth[apiMethod].post<Payload, UserSignIn>(values)
 
-    LocalStorage.setItem(REFRESH_TOKEN, data.refreshToken)
-
-    navigate('/')
+    login(data)
   }
 
   return (

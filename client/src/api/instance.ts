@@ -1,4 +1,10 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios'
+import { REFRESH_TOKEN } from '@/constant'
+import { LocalStorageService } from '@/services'
+
+interface RetryInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean
+}
 
 export const api = axios.create({
   baseURL: '/api',
@@ -9,12 +15,13 @@ export const api = axios.create({
 
 api.interceptors.response.use(
   function (res) {
-    console.log(res)
-
     return res
   },
-  function (err: AxiosError<{ message: string[] }>) {
-    const { response } = err
+  async function (
+    err: AxiosError<{ messages: string[] }, { _retry: boolean }>,
+  ) {
+    const { response } = err,
+      config = err.config as RetryInternalAxiosRequestConfig
 
     if (!response) {
       return Promise.reject(err)
@@ -22,6 +29,39 @@ api.interceptors.response.use(
 
     const { data, status } = response
 
-    return Promise.reject({ message: data.message, status })
+    if (status === 401 && !config?._retry) {
+      config._retry = true
+
+      try {
+        config._retry = true
+
+        const data = await axios.request(config)
+
+        return data
+      } catch (_) {
+        const refreshToken: string | null =
+          LocalStorageService.getItem(REFRESH_TOKEN)
+
+        return api
+          .post(
+            '/refresh',
+            {
+              refreshToken,
+            },
+            config,
+          )
+          .then(({ data }) => {
+            LocalStorageService.setItem(REFRESH_TOKEN, data.refreshToken)
+          })
+          .then(() => axios.request(config))
+          .catch((err) => {
+            LocalStorageService.removeItem(REFRESH_TOKEN)
+
+            return Promise.reject(err)
+          })
+      }
+    }
+
+    return Promise.reject({ messages: data.messages, status })
   },
 )

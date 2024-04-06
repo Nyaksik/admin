@@ -1,3 +1,5 @@
 export { signIn } from './signIn'
 export { signUp } from './signUp'
 export { refresh } from './refresh'
+export { logout } from './logout'
+export { login } from './login'

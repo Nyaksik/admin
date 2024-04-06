@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { notification } from 'antd'
 
 export function useFetch() {
   const [loading, setLoading] = useState(false)
@@ -9,11 +10,11 @@ export function useFetch() {
 
       await cb()
     } catch (err) {
-      const error = err as { message: string[]; status: number }
+      const error = err as { messages: string[]; status: number }
 
-      if (error?.message?.length) {
-        error.message.forEach((message) => {
-          console.error(message)
+      if (error?.messages?.length) {
+        error.messages.forEach((message) => {
+          notification.error({ message })
         })
       } else {
         console.error(error)
